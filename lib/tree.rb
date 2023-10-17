@@ -9,20 +9,38 @@ class Tree
 
   def build_tree(array)
     array = array.sort.uniq
-    p array
+    #p array
     if array.empty?
       return nil
     end
-
     mid = (array.length / 2)
-    p mid
+    #p mid
     root = Node.new(array[mid])
-    p root
-    p array.slice(0, mid)
-    p array.slice(mid + 1..-1)
-    
+    #p root
+    #p array.slice(0, mid)
+    #p array.slice(mid + 1..-1)
     root.left_node = build_tree(array.slice(0, mid))
     root.right_node = build_tree(array.slice(mid + 1..-1))
+    root
+  end 
+
+  def insert(value)
+    cur = @root
+    prv = nil
+    while cur != nil
+      if cur.data > value
+        prev = cur
+        cur = cur.left_node
+      else
+        prev = cur
+        cur = cur.right_node
+      end
+    end
+    if prev.data > value
+      prev.left_node = Node.new(value)
+    else
+      prev.right_node = Node.new(value)
+    end
     root
   end 
 
