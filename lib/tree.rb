@@ -86,6 +86,22 @@ class Tree
     end
   end 
 
+  def level_order(root=@root)
+    breath_first_array = []
+    queue = [root]
+
+    while queue.length > 0
+      cur = queue[0]
+      breath_first_array.push(cur.data)
+      queue.push(cur.left_node) if cur.left_node != nil
+      queue.push(cur.right_node) if cur.right_node != nil
+      queue.shift
+    end
+    breath_first_array             
+  end
+
+
+
 
 
   

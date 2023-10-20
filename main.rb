@@ -26,8 +26,10 @@ test_tree.pretty_print
 
 #test_tree.pretty_print
 
-test_tree.delete(4)
-test_tree.pretty_print
+#test_tree.delete(4)
+#test_tree.pretty_print
 
 found_node = test_tree.find(5)
-p found_node
+#p found_node
+
+p test_tree.level_order
