@@ -100,6 +100,42 @@ class Tree
     breadth_first_array             
   end
 
+  def preorder(root=@root)
+    depth_first_array = []
+    stack = [root]
+    order_function(stack, depth_first_array)
+  end 
+
+  def inorder(root=@root)
+    depth_first_array = []
+    root_value = root.data
+    stack = [root.right_node, root_value , root.left_node]
+    order_function(stack, depth_first_array, root_value)
+  end 
+
+  def postorder(root=@root)
+    depth_first_array = []
+    root_value = root.data
+    stack = [root_value, root.right_node, root.left_node]
+    order_function(stack, depth_first_array, root_value)
+  end 
+
+  def order_function(stack, depth_first_array, root_value=nil)
+    while stack.length > 0
+      cur = stack[-1]
+      if cur == root_value
+        depth_first_array.push(cur)
+        stack.pop
+      else
+        depth_first_array.push(cur.data)
+        stack.pop
+        stack.push(cur.right_node) if cur.right_node != nil
+        stack.push(cur.left_node) if cur.left_node != nil
+      end 
+    end
+    depth_first_array
+  end 
+
 
 
 

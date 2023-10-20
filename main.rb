@@ -33,3 +33,6 @@ found_node = test_tree.find(5)
 #p found_node
 
 p test_tree.level_order
+p test_tree.preorder
+p test_tree.inorder
+p test_tree.postorder
