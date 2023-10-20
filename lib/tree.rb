@@ -39,104 +39,39 @@ class Tree
     @root
   end 
 
-  def delete(value)
-    cur = @root
-    prev = nil
-  
-    while cur != nil && cur.data != value
-      prev = cur
-      if cur.data > value
-        cur = cur.left_node
-      else
-        cur = cur.right_node
-      end
-    end
-  
-    if cur == nil
-      p "There is no node with this value" 
-      return @root
-    end
-
-    cur_left = cur.left_node
-    cur_right = cur.right_node
-
-    if cur_left == nil && cur_right == nil 
-      prev.left_node = nil
-      prev.right_node = nil
-      return @root
-    end 
-     
-    if cur_left != nil
-      if prev.data > cur.data
-        prev.left_node = cur.left_node
-      else
-        prev.right_node = cur.left_node
-      end 
-    end
-
-    if cur_right != nil
-      if prev.data > cur.data
-        prev.left_node = cur.right_node
-      else 
-        prev.right_node = cur.right_node
-      end 
+  def delete(value, root=@root)
+    # base case
+    if root == nil
+      return root
     end 
 
-    if cur_left != nil && cur_right != nil
-      right_side = cur.right_node
-
-      while right_side.left_node != nil
-        right_side_prev = right_side
-        right_side = right_side.left_node
-      end
-    
-      if right_side.left_node == nil
-        cur.data = right_side.data
-        cur.right_node = right_side.right_node
+    if root.data > value
+      root.left_node = delete(value, root.left_node)
+      root.left_node
+    elsif root.data < value
+      root.right_node = delete(value, root.right_node)
+      root.right_node
+    else
+      if root.left_node == nil
+        return root.right_node
+      elsif root.right_node == nil
+        return root.left_node
       else
-        p right_side_prev
-        p right_side
-        p cur
-        p prev
-        right_side_prev.left_node = nil
-        cur.data = right_side.data
-        p cur
-        #cur.right_node = right_side_prev
-      end
-
-      p cur.data
-      p prev.data
-    
-      if cur.data > prev.data
-        prev.right_node = cur
-      else
-        prev.left_node = cur
+        cur = root.right_node
+        while cur.left_node
+          cur = cur.left_node
+        end 
+        root.data = cur.data
+        delete(cur.data, root.right_node)
       end 
-
-      
-
     end 
-
-    
-    
-    return @root
+   root
   end
+
+
+
   
 
-  right_side = cur_right
-  right_side_prev = nil
-
-  while right_side.left_node != nil
-    right_side_prev = right_side
-    right_side = right_side.left_node
-  end
-
-  if right_side_prev
-    right_side_prev.left_node = nil
-  end
-
-  cur.data = right_side.data
-  return @root
 
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_node, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_node
