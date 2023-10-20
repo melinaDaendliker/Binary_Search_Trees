@@ -47,11 +47,10 @@ class Tree
 
     if root.data > value
       root.left_node = delete(value, root.left_node)
-      root.left_node
     elsif root.data < value
       root.right_node = delete(value, root.right_node)
-      root.right_node
     else
+      p root
       if root.left_node == nil
         return root.right_node
       elsif root.right_node == nil
@@ -67,6 +66,25 @@ class Tree
     end 
    root
   end
+
+  def find(value, root=@root)
+    prev = nil
+    cur = @root
+    while cur != nil && cur.data != value
+      prev = cur 
+      if cur.data > value
+        cur = cur.left_node
+      else
+        cur = cur.right_node
+      end
+    end
+
+    if cur == nil
+      "The value does not exist in this tree"
+    else 
+      cur
+    end
+  end 
 
 
 
