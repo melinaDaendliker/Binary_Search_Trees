@@ -23,11 +23,11 @@ class Tree
     prev = nil
     until cur.nil?
       prev = cur
-      if cur.data > value
-        cur = cur.left_node
-      else
-        cur = cur.right_node
-      end
+      cur = if cur.data > value
+              cur.left_node
+            else
+              cur.right_node
+            end
     end
     if prev.data > value
       prev.left_node = Node.new(value)
@@ -142,6 +142,22 @@ class Tree
     results.push(left_side + 1)
     results.push(right_side + 1)
     results.max
+  end
+
+  def depth(node)
+    cur = @root
+    prev = nil
+    counter = 0
+    while cur.data != node.data
+      prev = cur
+      counter += 1
+      cur = if cur.data > node.data
+              cur.left_node
+            else
+              cur.right_node
+            end
+    end
+    counter
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)

@@ -37,5 +37,6 @@ p test_tree.level_order
 p test_tree.preorder
 p test_tree.inorder
 p test_tree.postorder
-node = test_tree.find(67)
+node = test_tree.find(6)
 p test_tree.height(node)
+p test_tree.depth(node)
