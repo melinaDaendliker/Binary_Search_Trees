@@ -160,6 +160,28 @@ class Tree
     counter
   end
 
+  def balanced?(root=@root)
+    if root==nil 
+      return true
+    end 
+
+    left_height = height(root.left_node)
+    right_height = height(root.right_node)
+
+    if (left_height - right_height).abs <= 1 &&
+      balanced?(root.left_node) &&
+      balanced?(root.right_node)
+     return true
+    end
+    false
+  end 
+
+  def rebalance(root=@root)
+    array = inorder(root)
+    @root = build_tree(array)
+  end 
+
+
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_node, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_node
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
