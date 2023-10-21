@@ -1,33 +1,31 @@
-require_relative 'node.rb'
+require_relative 'node'
 class Tree
-  attr_accessor :array, :root 
+  attr_accessor :array, :root
 
   def initialize(array)
     @array = array
     @root = build_tree(array)
-  end 
+  end
 
   def build_tree(array)
     array = array.sort.uniq
-    if array.empty?
-      return nil
-    end
+    return nil if array.empty?
+
     mid = (array.length / 2)
     root = Node.new(array[mid])
     root.left_node = build_tree(array.slice(0, mid))
     root.right_node = build_tree(array.slice(mid + 1..-1))
     root
-  end 
+  end
 
   def insert(value)
     cur = @root
     prev = nil
-    while cur != nil
+    until cur.nil?
+      prev = cur
       if cur.data > value
-        prev = cur
         cur = cur.left_node
       else
-        prev = cur
         cur = cur.right_node
       end
     end
@@ -37,13 +35,11 @@ class Tree
       prev.right_node = Node.new(value)
     end
     @root
-  end 
+  end
 
-  def delete(value, root=@root)
+  def delete(value, root = @root)
     # base case
-    if root == nil
-      return root
-    end 
+    return root if root.nil?
 
     if root.data > value
       root.left_node = delete(value, root.left_node)
@@ -51,76 +47,74 @@ class Tree
       root.right_node = delete(value, root.right_node)
     else
       p root
-      if root.left_node == nil
+      if root.left_node.nil?
         return root.right_node
-      elsif root.right_node == nil
+      elsif root.right_node.nil?
         return root.left_node
       else
         cur = root.right_node
-        while cur.left_node
-          cur = cur.left_node
-        end 
+        cur = cur.left_node while cur.left_node
         root.data = cur.data
         delete(cur.data, root.right_node)
-      end 
-    end 
-   root
-  end
-
-  def find(value, root=@root)
-    prev = nil
-    cur = @root
-    while cur != nil && cur.data != value
-      prev = cur 
-      if cur.data > value
-        cur = cur.left_node
-      else
-        cur = cur.right_node
       end
     end
+    root
+  end
 
-    if cur == nil
-      "The value does not exist in this tree"
-    else 
+  def find(value, _root = @root)
+    prev = nil
+    cur = @root
+    while !cur.nil? && cur.data != value
+      prev = cur
+      cur = if cur.data > value
+              cur.left_node
+            else
+              cur.right_node
+            end
+    end
+
+    if cur.nil?
+      'The value does not exist in this tree'
+    else
       cur
     end
-  end 
+  end
 
-  def level_order(root=@root)
+  def level_order(root = @root)
     breadth_first_array = []
     queue = [root]
 
     while queue.length > 0
       cur = queue[0]
       breadth_first_array.push(cur.data)
-      queue.push(cur.left_node) if cur.left_node != nil
-      queue.push(cur.right_node) if cur.right_node != nil
+      queue.push(cur.left_node) unless cur.left_node.nil?
+      queue.push(cur.right_node) unless cur.right_node.nil?
       queue.shift
     end
-    breadth_first_array             
+    breadth_first_array
   end
 
-  def preorder(root=@root)
+  def preorder(root = @root)
     depth_first_array = []
     stack = [root]
     order_function(stack, depth_first_array)
-  end 
+  end
 
-  def inorder(root=@root)
+  def inorder(root = @root)
     depth_first_array = []
     root_value = root.data
-    stack = [root.right_node, root_value , root.left_node]
+    stack = [root.right_node, root_value, root.left_node]
     order_function(stack, depth_first_array, root_value)
-  end 
+  end
 
-  def postorder(root=@root)
+  def postorder(root = @root)
     depth_first_array = []
     root_value = root.data
     stack = [root_value, root.right_node, root.left_node]
     order_function(stack, depth_first_array, root_value)
-  end 
+  end
 
-  def order_function(stack, depth_first_array, root_value=nil)
+  def order_function(stack, depth_first_array, root_value = nil)
     while stack.length > 0
       cur = stack[-1]
       if cur == root_value
@@ -129,27 +123,30 @@ class Tree
       else
         depth_first_array.push(cur.data)
         stack.pop
-        stack.push(cur.right_node) if cur.right_node != nil
-        stack.push(cur.left_node) if cur.left_node != nil
-      end 
+        stack.push(cur.right_node) unless cur.right_node.nil?
+        stack.push(cur.left_node) unless cur.left_node.nil?
+      end
     end
     depth_first_array
-  end 
+  end
 
+  def height(node)
+    results = []
 
+    return 0 if node.nil?
+    return 0 if node.left_node.nil? && node.right_node.nil?
 
+    left_side = height(node.left_node)
+    right_side = height(node.right_node)
 
-
-  
-
+    results.push(left_side + 1)
+    results.push(right_side + 1)
+    results.max
+  end
 
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right_node, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_node
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
     pretty_print(node.left_node, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left_node
   end
-
-end 
-
-
-
+end

@@ -18,6 +18,7 @@ test_tree.insert(100)
 
 test_tree.insert(40)
 test_tree.pretty_print
+test_tree.insert(7000)
 
 #test_tree.delete(35)
 #test_tree.delete(3)
@@ -36,3 +37,5 @@ p test_tree.level_order
 p test_tree.preorder
 p test_tree.inorder
 p test_tree.postorder
+node = test_tree.find(67)
+p test_tree.height(node)
